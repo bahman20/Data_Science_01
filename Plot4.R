@@ -1,0 +1,40 @@
+alldata<-read.table("C:\\Users\\Bahman\\Downloads\\exdata-data-household_power_consumption\\household_power_consumption.txt",sep = ";",header = TRUE)
+data<-subset(alldata,Date=="1/2/2007"|Date=="2/2/2007")
+timedata<-as.numeric(as.POSIXct(data$Time,format="%H:%M:%S"))
+par(mfrow=c(2,2))
+Global_active_powerdata<-as.numeric(data$Global_active_power)*1e-3
+plot(timedata,Global_active_powerdata,xaxt='n',pch=".",xlab="",ylab = "Global Active Power (kilowatts)")
+lines(timedata[order(timedata)], Global_active_powerdata[order(timedata)], xlim=range(timedata), ylim=range(Global_active_powerdata), pch=".")
+axesrange<-par("usr")
+axis(1,at=c(timedata[1],mean(c(timedata[1],timedata[length(timedata)])),timedata[length(timedata)]),labels=c("Thu","Fri","Sat"))
+
+Voltagedata<-as.numeric(data$Voltage)
+plot(timedata,Voltagedata,xaxt='n',pch=".",xlab="datetime",ylab = "Voltage")
+lines(timedata[order(timedata)], Voltagedata[order(timedata)], xlim=range(timedata), ylim=range(Voltagedata), pch=".")
+axesrange<-par("usr")
+axis(1,at=c(timedata[1],mean(c(timedata[1],timedata[length(timedata)])),timedata[length(timedata)]),labels=c("Thu","Fri","Sat"))
+
+
+axesrange<-par("usr")
+Sub_metering_1<-as.numeric(data$Sub_metering_1)
+plot(timedata,Sub_metering_1,xaxt='n',pch=".",xlab="",ylab = "Global Active Power (kilowatts)")
+lines(timedata[order(timedata)], Sub_metering_1[order(timedata)], xlim=range(timedata), ylim=range(Sub_metering_1), pch=".")
+par(new=TRUE)
+Sub_metering_2<-as.numeric(data$Sub_metering_2)
+plot(timedata,Sub_metering_2,xaxt='n',pch=".",col="red",axes = FALSE, xlab="",ylab="",ylim=range(Sub_metering_1))
+lines(timedata[order(timedata)], Sub_metering_2[order(timedata)], xlim=range(timedata), ylim=range(Sub_metering_1), pch=".",col="red")
+par(new=TRUE)
+Sub_metering_3<-as.numeric(data$Sub_metering_3)
+plot(timedata,Sub_metering_3,xaxt='n',pch=".",col="blue",axes = FALSE, xlab="",ylab="",ylim=range(Sub_metering_1))
+lines(timedata[order(timedata)], Sub_metering_3[order(timedata)], xlim=range(timedata), ylim=range(Sub_metering_1), pch=".",col="blue")
+axis(1,at=c(timedata[1],mean(c(timedata[1],timedata[length(timedata)])),timedata[length(timedata)]),labels=c("Thu","Fri","Sat"))
+legend("topright", c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=c(1,1,1),col=c("black","red","blue"),bty = "n",cex = 0.65)
+
+Global_reactive_powerdata<-as.numeric(data$Global_reactive_power)*1e-3
+plot(timedata,Global_reactive_powerdata,xaxt='n',pch=".",xlab="datetime",ylab = "Global_reactive_power")
+lines(timedata[order(timedata)], Global_reactive_powerdata[order(timedata)], xlim=range(timedata), ylim=range(Global_reactive_powerdata), pch=".")
+axesrange<-par("usr")
+axis(1,at=c(timedata[1],mean(c(timedata[1],timedata[length(timedata)])),timedata[length(timedata)]),labels=c("Thu","Fri","Sat"))
+
+dev.copy(png,"Plot4.png")
+dev.off()
